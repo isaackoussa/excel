@@ -44,6 +44,7 @@ export const MEMO: { category: string; entries: MemoEntry[] }[] = [
     entries: [
       { fr: 'RECHERCHEV', en: 'VLOOKUP', syntax: 'RECHERCHEV(valeur; table; n°_col; FAUX)', description: 'Cherche dans la 1ʳᵉ colonne et renvoie la colonne demandée.', example: '=RECHERCHEV(B2;Contrats!A:G;7;FAUX)' },
       { fr: 'RECHERCHEX', en: 'XLOOKUP', syntax: 'RECHERCHEX(valeur; plage_cherchée; plage_renvoyée; [si_absent])', description: 'Recherche moderne (Excel 2021 et 365).' },
+      { fr: 'CHOISIR', en: 'CHOOSE', syntax: 'CHOISIR(numéro; valeur1; valeur2…)', description: 'Renvoie la valeur correspondant au numéro (sélecteur de scénarios).', example: '=CHOISIR($B$5;B2;C2;D2)' },
       { fr: 'INDEX / EQUIV', en: 'INDEX / MATCH', syntax: 'INDEX(plage; EQUIV(valeur; plage_cherchée; 0))', description: 'Recherche compatible avec toutes les versions.' },
     ],
   },

@@ -158,9 +158,33 @@ export function mensualite(capital: number, tauxAnnuel: number, mois: number) {
 
 export const EMPRUNT = { capital: 180000, taux: 0.036, mois: 240 }
 
+/** Hypothèses du business plan d'un assureur non-vie (montants en k€). */
+export const BUSINESS_PLAN = {
+  primes: 80000,
+  croissance: 0.035,
+  sp: 0.74,
+  frais: 0.21,
+  provisions: 1.8,
+  rendement: 0.028,
+  impot: 0.25,
+  annees: 5,
+}
+
+/** Projection année par année : primes, résultat avant impôt et résultat net. */
+export function projeterBusinessPlan(h = BUSINESS_PLAN) {
+  return Array.from({ length: h.annees }, (_, i) => {
+    const primes = h.primes * Math.pow(1 + h.croissance, i)
+    const technique = primes * (1 - h.sp - h.frais)
+    const financier = primes * h.provisions * h.rendement
+    const avantImpot = technique + financier
+    const net = avantImpot - Math.max(0, avantImpot) * h.impot
+    return { primes, technique, financier, avantImpot, net }
+  })
+}
+
 // ---------- Description des fichiers téléchargeables ----------
 
-export type DatasetId = 'portefeuille' | 'sinistres' | 'mortalite' | 'triangle' | 'emprunt'
+export type DatasetId = 'portefeuille' | 'sinistres' | 'mortalite' | 'triangle' | 'emprunt' | 'businessplan'
 
 interface Column {
   header: string
@@ -284,6 +308,34 @@ export const DATASETS: Record<DatasetId, Dataset> = {
       'Calculez le coût total des intérêts.',
     ],
   },
+  businessplan: {
+    id: 'businessplan',
+    fileName: 'business_plan_assureur.xlsx',
+    title: 'Business plan d’un assureur',
+    description: 'Hypothèses d’un assureur non-vie (primes, S/P, frais, provisions, rendement financier, impôt) pour construire une projection sur 5 ans.',
+    sheetName: 'Hypothèses',
+    columns: [
+      { header: 'Hypothèse', width: 34 },
+      { header: 'Valeur', width: 14 },
+    ],
+    rows: () => [
+      ['Primes année 1 (k€)', BUSINESS_PLAN.primes],
+      ['Croissance annuelle des primes', BUSINESS_PLAN.croissance],
+      ['Ratio S/P', BUSINESS_PLAN.sp],
+      ['Taux de frais (en % des primes)', BUSINESS_PLAN.frais],
+      ['Provisions / primes', BUSINESS_PLAN.provisions],
+      ['Rendement financier des placements', BUSINESS_PLAN.rendement],
+      ['Taux d’impôt sur les sociétés', BUSINESS_PLAN.impot],
+      ['Durée de projection (années)', BUSINESS_PLAN.annees],
+    ],
+    instructions: [
+      'Créez un onglet « Projection » avec les années en colonnes et les postes en lignes.',
+      'Primes, sinistres (primes × S/P), frais, résultat technique.',
+      'Provisions (primes × coefficient), produits financiers (provisions × rendement), résultat avant impôt.',
+      'Impôt (jamais négatif) et résultat net. Toutes les formules doivent pointer vers l’onglet Hypothèses.',
+      'Avec la Valeur cible, trouvez le S/P maximal qui laisse un résultat avant impôt nul.',
+    ],
+  },
 }
 
 export async function downloadDataset(id: DatasetId) {
@@ -295,10 +347,11 @@ export async function downloadDataset(id: DatasetId) {
   ws.columns = ds.columns.map((c) => ({ header: c.header, width: c.width, style: c.numFmt ? { numFmt: c.numFmt } : {} }))
   ds.rows().forEach((r) => ws.addRow(r))
   if (id === 'emprunt') ws.getCell('B3').numFmt = '0.00%'
+  if (id === 'businessplan') for (const r of [3, 4, 5, 7, 8]) ws.getCell(`B${r}`).numFmt = '0.0%'
   const header = ws.getRow(1)
   header.font = { bold: true, color: { argb: 'FFFFFFFF' } }
   header.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FF107C41' } }
-  if (id !== 'emprunt' && id !== 'triangle') ws.autoFilter = { from: { row: 1, column: 1 }, to: { row: 1, column: ds.columns.length } }
+  if (id !== 'emprunt' && id !== 'triangle' && id !== 'businessplan') ws.autoFilter = { from: { row: 1, column: 1 }, to: { row: 1, column: ds.columns.length } }
 
   const info = wb.addWorksheet('Consignes')
   info.getColumn(1).width = 100

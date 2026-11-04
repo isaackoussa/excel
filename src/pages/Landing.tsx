@@ -66,7 +66,7 @@ export function Landing() {
               Créer mon compte gratuit
             </Link>
             <span className="muted">
-              {TOTAL_LESSONS} leçons · 5 modules · aucun prérequis
+              {TOTAL_LESSONS} leçons · {MODULES.length} modules · aucun prérequis
             </span>
           </div>
         </div>

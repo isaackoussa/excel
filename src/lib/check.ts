@@ -16,13 +16,20 @@ export interface FormulaOverride {
   shift: Shift
 }
 
-/** Cellules remplies par la recopie d'une formule de `target` jusqu'à `fillTo` (vers le bas). */
+/**
+ * Cellules remplies par la recopie d'une formule de `target` jusqu'à `fillTo` :
+ * vers le bas si les deux cellules sont dans la même colonne, vers la droite si elles sont sur la même ligne.
+ */
 export function fillTargets(target: string, fillTo?: string): { addr: string; shift: Shift }[] {
   const t = parseAddress(target)
   if (!fillTo) return [{ addr: target.toUpperCase(), shift: { dc: 0, dr: 0 } }]
   const end = parseAddress(fillTo)
   const out: { addr: string; shift: Shift }[] = []
-  for (let r = t.row; r <= end.row; r++) out.push({ addr: toAddress(t.col, r), shift: { dc: 0, dr: r - t.row } })
+  if (end.row === t.row) {
+    for (let c = t.col; c <= end.col; c++) out.push({ addr: toAddress(c, t.row), shift: { dc: c - t.col, dr: 0 } })
+  } else {
+    for (let r = t.row; r <= end.row; r++) out.push({ addr: toAddress(t.col, r), shift: { dc: 0, dr: r - t.row } })
+  }
   return out
 }
 

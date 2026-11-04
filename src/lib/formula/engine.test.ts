@@ -69,6 +69,8 @@ describe('analyse et calcul', () => {
     expect(calc('=VAN(10%;A1:A3)', { A1: 100, A2: 100, A3: 100 }) as number).toBeCloseTo(248.69, 2)
     expect(calc('=TRI(A1:A4)', { A1: -1000, A2: 400, A3: 400, A4: 400 }) as number).toBeCloseTo(0.09701, 4)
     expect(calc('=SOMMEPROD(A1:A2;B1:B2)', { A1: 2, A2: 3, B1: 4, B2: 5 })).toBe(23)
+    expect(calc('=CHOISIR(2;0,02;0,05;0,08)')).toBe(0.05)
+    expect(calc('=CHOOSE(A1,10,20)', { A1: 1 })).toBe(10)
   })
 
   it('recopie avec références relatives et absolues', () => {

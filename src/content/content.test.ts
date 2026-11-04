@@ -83,6 +83,10 @@ describe('recopie et références absolues', () => {
     expect(checkFormula(ex, '=B2*F$1').ok).toBe(true)
   })
 
+  it('recopie vers la droite', () => {
+    expect(fillTargets('C2', 'E2').map((t) => `${t.addr}:${t.shift.dc}`)).toEqual(['C2:0', 'D2:1', 'E2:2'])
+  })
+
   it('accepte les noms anglais et la virgule', () => {
     const lesson = ALL_LESSONS.find((l) => l.lesson.id === 'bases-2')!.lesson
     const ex = lesson.exercises.find((e) => e.type === 'formula')

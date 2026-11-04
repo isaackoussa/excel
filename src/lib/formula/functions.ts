@@ -337,6 +337,12 @@ export const FUNCTIONS: Record<string, Impl> = {
     if (idx < 0) return a[3] !== undefined ? toScalar(a[3]) : NA()
     return ret[idx]
   },
+  CHOISIR: (a) => {
+    if (a.length < 2) return VALUE_ERR()
+    const i = Math.floor(num(a[0]))
+    if (i < 1 || i >= a.length) return VALUE_ERR()
+    return a[i]
+  },
   INDEX: (a) => {
     arity(a, 2, 3)
     const r = asRange(a[0])
@@ -517,6 +523,7 @@ export const ALIASES: Record<string, string> = {
   VLOOKUP: 'RECHERCHEV',
   XLOOKUP: 'RECHERCHEX',
   MATCH: 'EQUIV',
+  CHOOSE: 'CHOISIR',
   PMT: 'VPM',
   FV: 'VC',
   PV: 'VA',

@@ -4,20 +4,21 @@ Application web d’apprentissage, sur le modèle des applis de langue : leçons
 
 ## Contenu
 
-5 modules, 25 leçons, plus de 100 exercices :
+6 modules, 30 leçons, plus de 130 exercices :
 
 | Module | Niveau | Thèmes |
 |---|---|---|
 | Les bases d’Excel | Débutant | Cellules, formules, SOMME/MOYENNE…, références `$`, SI/ET/OU, pourcentages |
 | Analyser un portefeuille d’assurance | Intermédiaire | NB.SI, SOMME.SI.ENS, RECHERCHEV/X, ratio S/P, tableaux croisés dynamiques |
 | Mathématiques financières | Intermédiaire | VC, VA, VPM, tableau d’amortissement, VAN, TRI |
+| Modélisation financière | Avancé | Structure d’un modèle, projection du compte de résultat, DCF, scénarios et sensibilités, business plan d’un assureur |
 | Actuariat et assurance | Avancé | Prime pure, tables de mortalité, valeurs actuelles probables, Chain Ladder |
 | VBA : automatiser Excel | Avancé | Macros, variables, Range/Cells, boucles, fonctions personnalisées, reporting |
 
 **Types d’exercices**
 - **Formule** : un mini-tableur dans le navigateur. L’élève tape une vraie formule (noms français ou anglais, `;` ou `,`), qui est calculée et vérifiée. On peut cliquer sur une cellule pendant la saisie pour insérer sa référence, comme dans Excel. Certaines formules sont recopiées vers le bas pour vérifier l’usage des `$`.
 - **QCM**, **code VBA à trous**, **lignes de code à remettre dans l’ordre**.
-- **Exercice sur fichier** : l’élève télécharge un `.xlsx` (portefeuille de 400 contrats, 140 sinistres, table de mortalité, triangle de règlements, emprunt), travaille dans son propre Excel et saisit le résultat.
+- **Exercice sur fichier** : l’élève télécharge un `.xlsx` (portefeuille de 400 contrats, 140 sinistres, table de mortalité, triangle de règlements, emprunt, business plan d’un assureur), travaille dans son propre Excel et saisit le résultat.
 
 Les données sont fictives mais générées de façon déterministe : les réponses attendues correspondent toujours aux fichiers téléchargés.
 
